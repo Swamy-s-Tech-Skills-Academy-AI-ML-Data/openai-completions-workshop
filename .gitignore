@@ -422,3 +422,6 @@ FodyWeavers.xsd
 *.pyc
 .venv/
 .env
+
+# Reference Code
+code/
