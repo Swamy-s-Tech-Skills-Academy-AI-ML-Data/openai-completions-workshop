@@ -1,7 +1,12 @@
-"""Generate structured pet salon name ideas with optional JSON output.
+"""Generate structured brand name ideas with optional JSON output.
 
 Demonstrates: single completion, deterministic temperature, optional JSON formatting.
-Set OUTPUT_FORMAT=json to request a JSON array; defaults to numbered text list.
+Environment:
+    OPENAI_MODEL   -> override model (default gpt-4o-mini)
+    OUTPUT_FORMAT  -> 'text' (default) or 'json'
+    NAME_CONTEXT   -> business / product context (default: eco-friendly smart home cleaning device)
+
+Set OUTPUT_FORMAT=json to request a JSON array; otherwise returns a numbered list.
 """
 import os
 import json
@@ -15,9 +20,13 @@ MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 OUTPUT_FORMAT = os.getenv("OUTPUT_FORMAT", "text").lower()  # 'text' or 'json'
 client = OpenAI(api_key=api_key)
 
+CONTEXT = os.getenv(
+    "NAME_CONTEXT", "an eco-friendly smart home cleaning device brand")
+
 BASE_PROMPT = (
-    "Suggest five creative, brandable names for a new pet salon. "
-    "Each name should evoke: professional care, friendliness, and personalized service."
+    f"Generate five distinct, concise, brandable names for {CONTEXT}. "
+    "Each name must: 1) be original (avoid tired clichés), 2) be pronounceable globally, "
+    "3) contain at most 3 words, and 4) avoid generic terms like 'Solution(s)' or 'Service(s)'."
 )
 
 if OUTPUT_FORMAT == "json":
