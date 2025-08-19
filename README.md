@@ -2,7 +2,7 @@
 
 _A focused, completions-only workshop: parameter control, quality vs cost, and reusable abstractions._
 
-This folder contains customized, vendor-neutral OpenAI API demo materials derived conceptually from Chapter 3 (Listings 3.1–3.12) but rewritten to emphasize:
+This folder contains customized, vendor-neutral OpenAI API demo materials rewritten to emphasize:
 
 - Pure OpenAI (no Azure-specific client usage)
 - Modern `openai` Python SDK patterns (v1+)
@@ -16,7 +16,7 @@ This folder contains customized, vendor-neutral OpenAI API demo materials derive
 openai-completions-workshop/
   ReadMe.md              # This file
   notebooks/
-    ch03_openai_demo.ipynb  # Main 45‑minute session notebook
+    openai_demo.ipynb  # Main 45‑minute session notebook
 ```
 
 ## Prerequisites
@@ -31,10 +31,47 @@ Optionally create a local `.env` file:
 OPENAI_API_KEY=sk-...your key...
 ```
 
+## 🔹 Installation & Setup
+
+Steps (PowerShell on Windows shown; bash/zsh equivalents in comments):
+
+```powershell
+# 1. Verify tooling
+python --version
+pip --version
+
+py -0p # To check installed Python versions (3.11+ required)
+
+# 2. Create & activate virtual environment (force Python 3.12)
+pip install virtualenv
+py -3.12 -m venv .venv                  # Ensures the venv uses Python 3.12
+. .venv/Scripts/Activate.ps1            # (bash/zsh: source .venv/bin/activate)
+
+# 3. Upgrade pip
+python -m pip install --upgrade pip
+
+# 4. First install (Bootstrap alternative if no requirements.txt yet):
+pip install openai tiktoken python-dotenv
+pip freeze > requirements.txt
+
+# 5. Install dependencies if requirements.txt exists
+pip install -r requirements.txt         # If the file exists (preferred)
+
+# 6. Provide your API key (either set env var or create .env)
+setx OPENAI_API_KEY "sk-..."            # (bash/zsh: export OPENAI_API_KEY="sk-...")
+# Then restart the shell so setx takes effect.
+```
+
+Optional version pinning: add a `.python-version` file at repo root (used by pyenv / some IDEs). Example:
+
+```text
+3.12
+```
+
 ## Notebook Outline
 
 1. Setup & sanity check
-2. Listing-style: Model listing & capability introspection
+2. Model inventory & capability introspection
 3. Baseline completion (simple naming prompt)
 4. Prompt refinement & structure
 5. Multiple candidates (n) + temperature sweep
@@ -46,7 +83,6 @@ OPENAI_API_KEY=sk-...your key...
 
 ## Customization Notes
 
-- Prompts adjusted from original examples to showcase diversity & control.
 - All outputs intentionally not cached—run live for authentic behavior.
 - Safe for public demo: avoid sensitive or ambiguous prompts.
 
