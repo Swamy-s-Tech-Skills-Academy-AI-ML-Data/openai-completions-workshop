@@ -2,7 +2,7 @@
 
 _A focused, completions-only workshop: parameter control, quality vs cost, and reusable abstractions._
 
-This folder contains customized, vendor-neutral OpenAI API demo materials rewritten to emphasize:
+This repository contains customized, vendor-neutral OpenAI API demo materials written to emphasize:
 
 - Pure OpenAI (no Azure-specific client usage)
 - Modern `openai` Python SDK patterns (v1+)
@@ -14,10 +14,14 @@ This folder contains customized, vendor-neutral OpenAI API demo materials rewrit
 
 ```text
 openai-completions-workshop/
-  ReadMe.md              # This file
+  README.md                          # This file
   notebooks/
-    openai_demo.ipynb  # Main 45‑minute session notebook
-  src/                 # Stand‑alone script samples (see section below)
+    openai_completions_workshop.ipynb    # Legacy / original workshop notebook
+    text_generation_with_completions.ipynb # 14 end-to-end text generation use cases (new)
+  src/                               # Stand‑alone script samples (see section below)
+  requirements.txt                   # Generated after first pip install freeze
+  .python-version                    # (Optional) Python toolchain pin
+  .copilot/                          # Copilot guidance config
 ```
 
 ## Prerequisites
@@ -69,26 +73,47 @@ Optional version pinning: add a `.python-version` file at repo root (used by pye
 3.12
 ```
 
-## Notebook Outline
+## Notebooks
 
-1. Setup & sanity check
-2. Model inventory & capability introspection
-3. Baseline completion (simple naming prompt)
-4. Prompt refinement & structure
-5. Multiple candidates (n) + temperature sweep
-6. Token counting & prompt compression
-7. Presence / frequency penalties (style steering)
-8. Streaming responses (incremental tokens)
-9. Helper wrapper & retries
-10. Recap & next steps
+### 1. `openai_completions_workshop.ipynb`
 
-## Sample Scripts (src/)
+Original 45‑minute, parameter‑oriented flow (model listing, parameter sweeps, streaming, penalties, token budgeting, retry helper intro).
+
+### 2. `text_generation_with_completions.ipynb`
+
+Feature-style showcase of **14 concrete text generation use cases** implemented with a shared resilient helper (`get_completion`) featuring:
+
+- Environment‑driven configuration (`OPENAI_MODEL`, `OAI_TEMP` / `OAI_TEMPERATURE`, `OAI_MAX_TOKENS`)
+- Lightweight retry (RateLimitError / APIError) with exponential backoff + jitter
+- Dataclass result wrapper (text, tokens, retries)
+- Deterministic vs creative temperature tuning per task
+
+Use Cases Covered:
+
+1. Summarization  
+2. Sentiment Classification  
+3. Multilingual Generation + Translation  
+4. Semantic Interpretation of Idiom  
+5. Factual Recall / Explanatory Response  
+6. Code Generation & Explanation (delimiter parsing)  
+7. Conversational Agent (FAQ Assistant with tiny in‑memory KB)  
+8. Style Transfer / Tone Adaptation  
+9. Data‑to‑Text Generation (tabular → narrative + aggregate insight)  
+10. Creative Writing (multi‑style variants + optional title)  
+11. Question Generation (tiered cognitive levels + numbering cleanup)  
+12. Entity Extraction with Explanation (typed bullet list)  
+13. Paraphrasing / Rewriting (multi‑constraint variants)  
+14. Email / Document Drafting (structured sections + variant)
+
+Each cell is intentionally self‑contained to minimize cross‑cell coupling and highlight prompt patterns.
+
+## Sample Scripts (`src/`)
 
 Seven focused Python scripts demonstrating core completion patterns. Each uses the `OPENAI_API_KEY` environment variable (and optional overrides noted). Run from the repo root or `code/` directory after activating your virtual env.
 
 | Script | Purpose | Key Args / Env Vars |
 |--------|---------|---------------------|
-| `1-list-openai-models.py` | Lists available models (first 10 printed) | `OPENAI_MODEL` (optional display override) |
+| `1-list-openai-models.py` | Lists available models (prints basic metadata + IDs) | `OPENAI_MODEL` (optional display override) |
 | `2-brand-taglines.py` | Generates 5 numbered taglines for a product ("PureMist" eco cleaner example) | `OPENAI_MODEL` |
 | `3-structured-names.py` | Produces 5 brand names (numbered or JSON) | `OUTPUT_FORMAT` (`text`/`json`), `NAME_CONTEXT` |
 | `4-multiple-response.py` | Parallel n completions for multiple name variants | `NAME_COUNT`, `OAI_TEMP` / `OAI_TEMPERATURE`, `NAME_CONTEXT` |
@@ -143,13 +168,18 @@ py src/7-tokenizer.py file:my_prompts.txt
 - All outputs intentionally not cached—run live for authentic behavior.
 - Safe for public demo: avoid sensitive or ambiguous prompts.
 
-## Extending
+## Extending & Ideas
 
-- Add function calling examples
-- Insert evaluation harness cell (e.g., simple rubric scoring)
-- Add cost estimation utility
+Planned / easy wins:
 
-## Completions-Only Toolkit (Added)
+- Add automated evaluation harness (LLM rubric or regex assertions) for select prompts
+- Cost estimation helper (tokens × price) + per‑use case tally
+- Structured JSON output examples (e.g., schema extraction) with validation
+- Retrieval augmentation stub (swap in vector lookup for FAQ)
+- Batch prompt runner for grid searching temperature / max_tokens combinations
+- Streaming variants for selected creative tasks
+
+## Completions-Only Toolkit (Optional Add‑On)
 
 Lightweight abstraction for the dedicated completions session.
 
@@ -196,11 +226,12 @@ print(res[0].text)
 - Normalized result dataclass (latency, tokens, finish_reason)
 - Simple to extend with cost estimator or logging hooks
 
-### Next Ideas
+### Next Toolkit Ideas
 
 - Grid search (temperature × top_p) exporter
 - Cost per 1K tokens annotation in output
 - Stop sequence library for structured extraction
+- JSON schema enforcement (retry on invalid parse)
 
 ---
 _Prepared automatically by session asset generator._
