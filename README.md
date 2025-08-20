@@ -2,7 +2,7 @@
 
 _A focused, completions-only workshop: parameter control, quality vs cost, and reusable abstractions._
 
-This folder contains customized, vendor-neutral OpenAI API demo materials derived conceptually from Chapter 3 (Listings 3.1–3.12) but rewritten to emphasize:
+This folder contains customized, vendor-neutral OpenAI API demo materials rewritten to emphasize:
 
 - Pure OpenAI (no Azure-specific client usage)
 - Modern `openai` Python SDK patterns (v1+)
@@ -16,7 +16,8 @@ This folder contains customized, vendor-neutral OpenAI API demo materials derive
 openai-completions-workshop/
   ReadMe.md              # This file
   notebooks/
-    ch03_openai_demo.ipynb  # Main 45‑minute session notebook
+    openai_demo.ipynb  # Main 45‑minute session notebook
+  src/                 # Stand‑alone script samples (see section below)
 ```
 
 ## Prerequisites
@@ -31,10 +32,47 @@ Optionally create a local `.env` file:
 OPENAI_API_KEY=sk-...your key...
 ```
 
+## 🔹 Installation & Setup
+
+Steps (PowerShell on Windows shown; bash/zsh equivalents in comments):
+
+```powershell
+# 1. Verify tooling
+python --version
+pip --version
+
+py -0p # To check installed Python versions (3.11+ required)
+
+# 2. Create & activate virtual environment (force Python 3.12)
+pip install virtualenv
+py -3.12 -m venv .venv                  # Ensures the venv uses Python 3.12
+. .venv/Scripts/Activate.ps1            # (bash/zsh: source .venv/bin/activate)
+
+# 3. Upgrade pip
+python -m pip install --upgrade pip
+
+# 4. First install (Bootstrap alternative if no requirements.txt yet):
+pip install openai tiktoken python-dotenv
+pip freeze > requirements.txt
+
+# 5. Install dependencies if requirements.txt exists
+pip install -r requirements.txt         # If the file exists (preferred)
+
+# 6. Provide your API key (either set env var or create .env)
+setx OPENAI_API_KEY "sk-..."            # (bash/zsh: export OPENAI_API_KEY="sk-...")
+# Then restart the shell so setx takes effect.
+```
+
+Optional version pinning: add a `.python-version` file at repo root (used by pyenv / some IDEs). Example:
+
+```text
+3.12
+```
+
 ## Notebook Outline
 
 1. Setup & sanity check
-2. Listing-style: Model listing & capability introspection
+2. Model inventory & capability introspection
 3. Baseline completion (simple naming prompt)
 4. Prompt refinement & structure
 5. Multiple candidates (n) + temperature sweep
@@ -44,9 +82,64 @@ OPENAI_API_KEY=sk-...your key...
 9. Helper wrapper & retries
 10. Recap & next steps
 
+## Sample Scripts (src/)
+
+Seven focused Python scripts demonstrating core completion patterns. Each uses the `OPENAI_API_KEY` environment variable (and optional overrides noted). Run from the repo root or `code/` directory after activating your virtual env.
+
+| Script | Purpose | Key Args / Env Vars |
+|--------|---------|---------------------|
+| `1-list-openai-models.py` | Lists available models (first 10 printed) | `OPENAI_MODEL` (optional display override) |
+| `2-brand-taglines.py` | Generates 5 numbered taglines for a product ("PureMist" eco cleaner example) | `OPENAI_MODEL` |
+| `3-structured-names.py` | Produces 5 brand names (numbered or JSON) | `OUTPUT_FORMAT` (`text`/`json`), `NAME_CONTEXT` |
+| `4-multiple-response.py` | Parallel n completions for multiple name variants | `NAME_COUNT`, `OAI_TEMP` / `OAI_TEMPERATURE`, `NAME_CONTEXT` |
+| `5-multiple-responses.py` | Uses `best_of` to internally sample & return a single top name | `BEST_OF`, `MAX_TOKENS`, `OAI_TEMP`, `NAME_CONTEXT` |
+| `6-stream.py` | Streams three names + taglines structure token-by-token | `NAME_CONTEXT`, `OAI_TEMP`, `MAX_TOKENS` |
+| `7-tokenizer.py` | Token counting helper (model-aware) for prompts | `OPENAI_MODEL`; CLI arg or `file:prompts.txt` |
+
+### Quick Run Examples (PowerShell)
+
+```powershell
+# 1. List models
+py src/1-list-openai-models.py
+
+# 2. Taglines (override model)
+$env:OPENAI_MODEL='gpt-4o-mini'; py src/2-brand-taglines.py
+
+# 3. Structured names as JSON
+$env:OUTPUT_FORMAT='json'; $env:NAME_CONTEXT='a biodegradable travel accessory brand'; py src/3-structured-names.py
+
+# 4. Multiple parallel name candidates
+$env:NAME_CONTEXT='an AI meeting summarizer'; $env:NAME_COUNT='4'; $env:OAI_TEMP='0.8'; py src/4-multiple-response.py
+
+# 5. best_of single winner
+$env:NAME_CONTEXT='a privacy-focused personal finance app'; $env:BEST_OF='6'; py src/5-multiple-responses.py
+
+# 6. Streaming structured output
+$env:NAME_CONTEXT='an AI-powered personal language coach'; py src/6-stream.py
+
+# 7. Token counting
+py src/7-tokenizer.py "Summarize quarterly revenue drivers succinctly."
+py src/7-tokenizer.py file:my_prompts.txt
+```
+
+### Common Environment Variables
+
+- `OPENAI_API_KEY` (required) – your API key
+- `OPENAI_MODEL` – default model (falls back to `gpt-4o-mini` if unset)
+- `OAI_TEMP` / `OAI_TEMPERATURE` – preferred temperature override (scripts avoid clashing with system `TEMP`)
+- `NAME_CONTEXT` – swaps in different product/service contexts
+- `OUTPUT_FORMAT` – `json` or `text` (script 3)
+- `BEST_OF`, `NAME_COUNT`, `MAX_TOKENS` – sampling / control parameters
+
+### Suggested Progression
+
+1 → 2 → 3 introduces basic prompting, structure & format control.
+4 vs 5 compares explicit parallel sampling (`n`) to internal `best_of` ranking.
+6 shows streaming for long outputs.
+7 helps you budget tokens before sending prompts.
+
 ## Customization Notes
 
-- Prompts adjusted from original examples to showcase diversity & control.
 - All outputs intentionally not cached—run live for authentic behavior.
 - Safe for public demo: avoid sensitive or ambiguous prompts.
 

@@ -1,0 +1,28 @@
+{
+    "ignoredPaths": [
+        "**/.venv/**",
+        "**/__pycache__/**",
+        "**/.git/**"
+    ],
+    "languageConfigs": {
+        "python": {
+            "style": "pep8",
+            "maxLineLength": 100,
+            "preferTypeHints": true,
+            "docstringFormat": "google"
+        }
+    },
+    "context": {
+        "maxProjectFiles": 120,
+        "include": [
+            "README.md",
+            "src/**/*.py",
+            "notebooks/**/*.ipynb",
+            ".github/copilot-instructions.md"
+        ]
+    },
+    "prompts": {
+        "fileHeader": "Generated sample. Follow project env var patterns (OPENAI_API_KEY, OPENAI_MODEL, OAI_TEMP). Keep examples minimal and self-contained.",
+        "testStyle": "pytest-minimal"
+    }
+}
