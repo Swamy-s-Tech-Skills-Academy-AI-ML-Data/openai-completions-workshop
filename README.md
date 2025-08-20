@@ -1,4 +1,4 @@
-# OpenAI Completions Workshop
+# 14 Practical Text Generation Patterns with OpenAI Completions using Python
 
 _A focused, completions-only workshop: parameter control, quality vs cost, and reusable abstractions._
 
