@@ -1,7 +1,7 @@
 """Use best_of to internally sample multiple completions and return the top (by logprob).
 
 Environment variables:
-    OPENAI_MODEL  (default gpt-4o-mini)
+    OPENAI_MODEL  (default gpt-3.5-turbo-instruct)
     OAI_TEMP / OAI_TEMPERATURE (preferred temperature override)
     BEST_OF       (default 5)
     MAX_TOKENS    (default 120)
@@ -16,7 +16,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise EnvironmentError("OPENAI_API_KEY environment variable not set.")
 
-MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo-instruct")
 
 
 def _parse_temp():

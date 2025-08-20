@@ -62,7 +62,7 @@ A focused set of OpenAI Completions API examples + a workshop notebook. Emphasis
 """Short description (what it demonstrates).
 
 Environment variables:
-  OPENAI_MODEL (default gpt-4o-mini)
+  OPENAI_MODEL (default gpt-3.5-turbo-instruct)
   OAI_TEMP (optional) – temperature override
 """
 import os
@@ -72,7 +72,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise EnvironmentError("OPENAI_API_KEY not set.")
 
-MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo-instruct")
 TEMP = float(os.getenv("OAI_TEMP", "0.7"))
 client = OpenAI(api_key=api_key)
 

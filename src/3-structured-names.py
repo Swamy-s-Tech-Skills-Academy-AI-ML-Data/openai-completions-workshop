@@ -2,7 +2,7 @@
 
 Demonstrates: single completion, deterministic temperature, optional JSON formatting.
 Environment:
-    OPENAI_MODEL   -> override model (default gpt-4o-mini)
+    OPENAI_MODEL   -> override model (default gpt-3.5-turbo-instruct)
     OUTPUT_FORMAT  -> 'text' (default) or 'json'
     NAME_CONTEXT   -> business / product context (default: eco-friendly smart home cleaning device)
 
@@ -16,7 +16,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise EnvironmentError("OPENAI_API_KEY environment variable not set.")
 
-MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo-instruct")
 OUTPUT_FORMAT = os.getenv("OUTPUT_FORMAT", "text").lower()  # 'text' or 'json'
 client = OpenAI(api_key=api_key)
 

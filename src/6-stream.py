@@ -1,7 +1,7 @@
 """Stream a longer completion token-by-token.
 
 Environment variables:
-    OPENAI_MODEL (default gpt-4o-mini)
+    OPENAI_MODEL (default gpt-3.5-turbo-instruct)
     OAI_TEMP / OAI_TEMPERATURE / TEMP (temperature precedence, default 0.8)
     MAX_TOKENS (default 400)
     NAME_CONTEXT (default "an AI-powered personal language coach")
@@ -14,7 +14,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise EnvironmentError("OPENAI_API_KEY environment variable not set.")
 
-MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo-instruct")
 
 
 def _parse_temp():
