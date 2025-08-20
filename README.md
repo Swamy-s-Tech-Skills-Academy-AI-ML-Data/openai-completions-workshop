@@ -128,7 +128,7 @@ Seven focused Python scripts demonstrating core completion patterns. Each uses t
 py src/1-list-openai-models.py
 
 # 2. Taglines (override model)
-$env:OPENAI_MODEL='gpt-4o-mini'; py src/2-brand-taglines.py
+$env:OPENAI_MODEL='gpt-3.5-turbo-instruct'; py src/2-brand-taglines.py
 
 # 3. Structured names as JSON
 $env:OUTPUT_FORMAT='json'; $env:NAME_CONTEXT='a biodegradable travel accessory brand'; py src/3-structured-names.py
@@ -150,7 +150,7 @@ py src/7-tokenizer.py file:my_prompts.txt
 ### Common Environment Variables
 
 - `OPENAI_API_KEY` (required) – your API key
-- `OPENAI_MODEL` – default model (falls back to `gpt-4o-mini` if unset)
+- `OPENAI_MODEL` – default model (falls back to `gpt-3.5-turbo-instruct` if unset)
 - `OAI_TEMP` / `OAI_TEMPERATURE` – preferred temperature override (scripts avoid clashing with system `TEMP`)
 - `NAME_CONTEXT` – swaps in different product/service contexts
 - `OUTPUT_FORMAT` – `json` or `text` (script 3)

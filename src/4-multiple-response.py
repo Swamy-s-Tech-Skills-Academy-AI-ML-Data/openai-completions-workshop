@@ -1,7 +1,7 @@
 """Generate multiple brand name ideas in parallel (n completions).
 
 Uses the OpenAI Completions API with configurable parameters via env vars:
-  OPENAI_MODEL  (default gpt-4o-mini)
+  OPENAI_MODEL  (default gpt-3.5-turbo-instruct)
   NAME_COUNT    (default 5) -> number of parallel completions (n)
   TEMP          (default 0.7)
 """
@@ -12,7 +12,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise EnvironmentError("OPENAI_API_KEY environment variable not set.")
 
-MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo-instruct")
 N = int(os.getenv("NAME_COUNT", "5"))
 
 
