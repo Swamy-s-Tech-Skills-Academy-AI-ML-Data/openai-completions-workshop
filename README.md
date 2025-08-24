@@ -10,18 +10,33 @@ This repository contains customized, vendor-neutral OpenAI API demo materials wr
 - Live exploration of parameters: temperature, max_tokens, n, streaming
 - Good practices: environment variables, token awareness, simple retry wrapper
 
-## Structure
+## Project Structure
 
 ```text
 openai-completions-workshop/
-  README.md                          # This file
-  notebooks/
-    openai_completions_workshop.ipynb    # Legacy / original workshop notebook
-    text_generation_with_completions.ipynb # 14 end-to-end text generation use cases (new)
-  src/                               # Stand‑alone script samples (see section below)
-  requirements.txt                   # Generated after first pip install freeze
+  README.md                          # Project overview & instructions
+  LICENSE                            # License file
+  requirements.txt                   # Python dependencies
   .python-version                    # (Optional) Python toolchain pin
-  .copilot/                          # Copilot guidance config
+  .env                               # (Optional) Local secrets (never committed)
+  .copilot/
+    settings.json                    # Copilot guidance config
+  .venv/                             # (Optional) Local Python virtual environment
+  code/                              # (Optional) User code experiments
+  docs/
+    images/                          # Documentation images
+  notebooks/
+    openai_completions_workshop.ipynb    # Original workshop notebook
+    text_generation_with_completions.ipynb # 14 end-to-end text generation use cases (new)
+  src/
+    1-list-openai-models.py          # List available models
+    2-brand-taglines.py              # Generate brand taglines
+    3-structured-names.py            # Structured name generation
+    4-multiple-response.py           # Multiple completions (n)
+    5-multiple-responses.py          # Best-of completions
+    6-stream.py                      # Streaming completions
+    7-tokenizer.py                   # Token counting utility
+    oai-models.json                  # (Optional) Model metadata cache
 ```
 
 ## Prerequisites
